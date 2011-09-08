@@ -11,6 +11,21 @@ describe Cleandata::Connection do
       @connection = Cleandata::Connector.connect(:host => "localhost", :port => 8080)
     end
 
+    it "handles all comparison operators" do
+      @connection.to_op(:eq).to_s.should == "="
+      @connection.to_op(:gt).to_s.should == ">"
+      @connection.to_op(:gte).to_s.should == ">="
+      @connection.to_op(:lt).to_s.should == "<"
+      @connection.to_op(:lte).to_s.should == "<="
+      @connection.to_op(:neq).to_s.should == "!="
+      @connection.to_op(:in).to_s.should == "IN"
+    end
+
+    it "handles all sort directions" do
+      @connection.to_sort_direction(:asc).to_s.should == "ASCENDING"
+      @connection.to_sort_direction(:desc).to_s.should == "DESCENDING"
+    end
+
     it "converts an entity to a dot hash" do
       jentity = Java::com.google.appengine.api.datastore.Entity.new("Widget", 1234)
       jentity.setProperty("foo", "FOO!!!")
@@ -19,7 +34,7 @@ describe Cleandata::Connection do
       entity = @connection.unpack_entity(jentity)
 
       entity.kind.should == "Widget"
-      entity.key.should == @connection.key_to_s(jentity.getKey())
+      entity.key.should == jentity.getKey().unpack
       entity.foo.should == "FOO!!!"
       entity.bar.should == 1234
     end
@@ -64,16 +79,12 @@ describe Cleandata::Connection do
 
       it "sorts" do
         viewings = @connection.find_by_kind("viewing", :sorts => [[:created_at, :asc]], :limit => 10)
-        viewings.each {|v| p v}
         9.times do |i|
-          viewings[i].created_at.before(viewings[i+1].created_at).should == true
+          viewings[i].created_at.should < viewings[i+1].created_at
         end
       end
 
     end
-
-
-
 
   end
 

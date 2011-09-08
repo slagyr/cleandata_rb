@@ -1,3 +1,5 @@
+require "cleandata/packing"
+
 module Cleandata
 
   class Connection
@@ -6,10 +8,6 @@ module Cleandata
 
     def initialize(service)
       @service = service
-    end
-
-    def key_to_s(key)
-      Java::com.google.appengine.api.datastore.KeyFactory.keyToString(key)
     end
 
     def rubitize(name)
@@ -23,6 +21,12 @@ module Cleandata
     def to_op(op)
       case op
         when :eq; Java::com.google.appengine.api.datastore.Query::FilterOperator::EQUAL
+        when :gt; Java::com.google.appengine.api.datastore.Query::FilterOperator::GREATER_THAN
+        when :gte; Java::com.google.appengine.api.datastore.Query::FilterOperator::GREATER_THAN_OR_EQUAL
+        when :lt; Java::com.google.appengine.api.datastore.Query::FilterOperator::LESS_THAN
+        when :lte; Java::com.google.appengine.api.datastore.Query::FilterOperator::LESS_THAN_OR_EQUAL
+        when :neq; Java::com.google.appengine.api.datastore.Query::FilterOperator::NOT_EQUAL
+        when :in; Java::com.google.appengine.api.datastore.Query::FilterOperator::IN
         else raise "Unknown operator: #{op}"
       end
     end
@@ -30,7 +34,7 @@ module Cleandata
     def to_sort_direction(direction)
       case direction
         when :asc; Java::com.google.appengine.api.datastore.Query::SortDirection::ASCENDING
-        when :desc; Java::com.google.appengine.api.datastore.Query::SortDirection::DECENDING
+        when :desc; Java::com.google.appengine.api.datastore.Query::SortDirection::DESCENDING
         else raise "Unknown sort direction: #{direction}"
       end
     end
@@ -38,9 +42,9 @@ module Cleandata
     def unpack_entity(jentity)
       result = DotHash.new
       result[:kind] = jentity.getKind
-      result[:key] = key_to_s(jentity.getKey)
+      result[:key] = jentity.getKey.unpack
       jentity.getProperties.each do |(key, value)|
-        result[rubitize(key).to_sym] = value
+        result[rubitize(key).to_sym] = value.unpack
       end
       result
     end
