@@ -5,7 +5,7 @@ $:.unshift lib unless $:.include?(lib)
 Gem::Specification.new do |s|
   s.name        = "cleandata"
   s.version     = "1.0.0"
-  s.platform    = Gem::Platform::JRUBY
+  s.platform    = Gem::Platform::RUBY
   s.authors     = ["Micah Martin"]
   s.email       = ["micahmartin@gmail.com"]
   s.homepage    = "http://github.com/slagyr/cleandata_rb"
