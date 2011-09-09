@@ -50,7 +50,7 @@ class JDate
     cal = Java::java.util.GregorianCalendar.new
     cal.setTime(self)
     y = cal.get(Java::java.util.Calendar::YEAR)
-    m = cal.get(Java::java.util.Calendar::MONTH)
+    m = cal.get(Java::java.util.Calendar::MONTH) + 1
     d = cal.get(Java::java.util.Calendar::DAY_OF_MONTH)
     h = cal.get(Java::java.util.Calendar::HOUR)
     min = cal.get(Java::java.util.Calendar::MINUTE)

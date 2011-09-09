@@ -1,4 +1,5 @@
 require "cleandata/packing"
+require "cleandata/dot_hash"
 
 module Cleandata
 

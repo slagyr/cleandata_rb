@@ -24,7 +24,7 @@ describe "Packing" do
 
   it "unpacks dates" do
     result = Java::java.util.Date.new(101, 1, 2, 3, 4, 5).unpack
-    result.to_s.should == "2001-01-02T03:04:05+00:00"
+    result.to_s.should == "2001-02-02T03:04:05+00:00"
   end
 
   it "unpacks Text" do
