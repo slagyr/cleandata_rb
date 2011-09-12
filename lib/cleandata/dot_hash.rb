@@ -1,6 +1,6 @@
 module Cleandata
 
-  class DotHash < Hash
+  module Dottable
 
     def method_missing(name, *args, &block)
       if has_key?(name)
@@ -10,6 +10,20 @@ module Cleandata
       end
     end
 
+  end
+
+  class DotHash < Hash
+
+    include Dottable
+
+  end
+
+end
+
+class Hash
+
+  def dottable
+    self.extend Cleandata::Dottable
   end
 
 end

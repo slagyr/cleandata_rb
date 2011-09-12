@@ -22,4 +22,8 @@ describe Cleandata::DotHash do
     lambda { subject.foo = "bar" }.should raise_error(NoMethodError)
   end
 
+  it "can convert hashes into dotabbles" do
+    {:bar => "bar"}.dottable.bar.should == "bar"
+  end
+
 end
