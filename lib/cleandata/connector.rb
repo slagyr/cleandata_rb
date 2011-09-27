@@ -13,6 +13,10 @@ module Cleandata
     attr_reader :connection
 
     def initialize(options = {})
+      configure(options)
+    end
+
+    def configure(options)
       @host = options[:host] || "cleancoders.appspot.com"
       @port = options[:port] || 443
       @username = options[:username] || ""

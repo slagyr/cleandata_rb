@@ -11,6 +11,10 @@ module Cleandata
       @connector = Connector.new(options)
     end
 
+    def configure(options)
+      @connector.configure(options)
+    end
+
     def connection
       if @connection.nil?
         @connector.connect!
